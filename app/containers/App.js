@@ -1,9 +1,18 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+
 import { Grid } from 'react-bootstrap';
 import TopNavContainer from './TopNavContainer';
 
-class App extends React.Component {
+import { initAuth, maybeExchangeCodeForAccessToken } from '../actions/auth';
+
+class App extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(maybeExchangeCodeForAccessToken());
+    dispatch(initAuth());
+  }
+
   render() {
     return (
       <div>
@@ -18,7 +27,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   children: PropTypes.node
 };
 
-export default App;
+export default connect()(App);

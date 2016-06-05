@@ -9,6 +9,20 @@ class TopNav extends Component {
     dispatch(requestSignIn());
   }
 
+  renderRightNav() {
+    const { auth: { userId } } = this.props;
+    if (!userId) {
+      return (
+        <Nav pullRight>
+          <NavItem onClick={e => {
+            e.preventDefault();
+            this.signIn();
+          }}>Sign In</NavItem>
+        </Nav>
+      );
+    }
+  }
+
   render() {
     return (
       <Navbar staticTop inverse>
@@ -17,19 +31,15 @@ class TopNav extends Component {
             <Link to="/">Mondo</Link>
           </Navbar.Brand>
         </Navbar.Header>
-        <Nav pullRight>
-          <NavItem onClick={e => {
-            e.preventDefault();
-            this.signIn();
-          }}>Sign In</NavItem>
-        </Nav>
+        {this.renderRightNav()}
       </Navbar>
     );
   }
 }
 
 TopNav.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 export default TopNav;

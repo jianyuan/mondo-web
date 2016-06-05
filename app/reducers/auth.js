@@ -12,6 +12,11 @@ export default function auth(state = initialState, action) {
       accessToken: action.accessToken
     });
 
+  case types.RECEIVE_USER_ID:
+    return Object.assign({}, state, {
+      userId: action.userId
+    });
+
   default:
     return state;
   }
