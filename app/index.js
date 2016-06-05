@@ -13,7 +13,9 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducer from './reducers';
 
+import NoMatch from './components/NoMatch';
 import App from './containers/App';
+import SignInContainer from './containers/SignInContainer';
 
 
 const store = createStore(
@@ -22,17 +24,12 @@ const store = createStore(
 );
 
 
-class SignIn extends React.Component {
-  render() {
-    return <div>Sign In</div>;
-  }
-}
-
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
-        <Route path="sign_in" component={SignIn} />
+        <Route path="sign_in" component={SignInContainer} />
+        <Route path="*" component={NoMatch}/>
       </Route>
     </Router>
   </Provider>,

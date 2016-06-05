@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import { Grid } from 'react-bootstrap';
 import TopNavContainer from './TopNavContainer';
 
-import { initAuth, maybeExchangeCodeForAccessToken } from '../actions/auth';
+import { initAuth } from '../actions/auth';
 
 class App extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(maybeExchangeCodeForAccessToken());
     dispatch(initAuth());
   }
 
@@ -18,7 +17,6 @@ class App extends Component {
       <div>
         <TopNavContainer />
         <Grid>
-          <h1>Mondo</h1>
           {this.props.children}
         </Grid>
       </div>

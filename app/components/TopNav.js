@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
+import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { requestSignIn, signOut } from '../actions/auth';
 
 class TopNav extends Component {
@@ -14,9 +15,25 @@ class TopNav extends Component {
     dispatch(signOut());
   }
 
-  renderRightNav() {
-    const { accounts: { items: [account] } } = this.props;
-    if (account) {
+  renderMainNav() {
+    const { auth: userId } = this.props;
+
+    if (!userId) {
+      return;
+    }
+
+    return (
+      <Nav>
+        <LinkContainer to="/transactions">
+          <NavItem>Transactions</NavItem>
+        </LinkContainer>
+      </Nav>
+    );
+  }
+
+  renderSubNav() {
+    const { accounts: { items: [account] }, auth: userId } = this.props;
+    if (account && userId) {
       return (
         <Nav pullRight>
           <NavDropdown title={account.description} id="topnav-dropdown">
@@ -47,7 +64,8 @@ class TopNav extends Component {
             <Link to="/">Mondo</Link>
           </Navbar.Brand>
         </Navbar.Header>
-        {this.renderRightNav()}
+        {this.renderMainNav()}
+        {this.renderSubNav()}
       </Navbar>
     );
   }
