@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
+import { requestSignIn } from '../actions/auth';
 
-export default class TopNav extends React.Component {
+class TopNav extends Component {
+  signIn() {
+    const { dispatch } = this.props;
+    dispatch(requestSignIn());
+  }
+
   render() {
     return (
       <Navbar staticTop inverse>
@@ -13,11 +18,18 @@ export default class TopNav extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav pullRight>
-          <LinkContainer to="/sign_in">
-            <NavItem>Sign In</NavItem>
-          </LinkContainer>
+          <NavItem onClick={e => {
+            e.preventDefault();
+            this.signIn();
+          }}>Sign In</NavItem>
         </Nav>
       </Navbar>
     );
   }
 }
+
+TopNav.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+export default TopNav;

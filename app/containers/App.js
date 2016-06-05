@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Grid } from 'react-bootstrap';
-import TopNav from '../components/TopNav';
+import TopNavContainer from './TopNavContainer';
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <div>
-        <TopNav />
+        <TopNavContainer />
         <Grid>
           <h1>Mondo</h1>
           {this.props.children}
@@ -20,3 +20,5 @@ export default class App extends React.Component {
 App.propTypes = {
   children: PropTypes.node
 };
+
+export default App;
