@@ -3,19 +3,10 @@ import Cookies from 'js-cookie';
 import { push } from 'react-router-redux';
 import * as types from '../constants/ActionTypes';
 import * as Mondo from '../constants/Mondo';
+import checkStatus from '../utils/checkStatus';
+import { fetchAccounts } from './accounts';
 
 const ACCESS_TOKEN_COOKIE_NAME = 'accessToken';
-
-function checkStatus(response) {
-  if (response.ok) {
-    return response;
-  } else {
-    let error = new Error(response.statusText);
-    error.response = response;
-    throw error;
-  }
-}
-
 
 function receiveAccessToken(accessToken) {
   return { type: types.RECEIVE_ACCESS_TOKEN, accessToken };
@@ -23,6 +14,10 @@ function receiveAccessToken(accessToken) {
 
 function receiveUserId(userId) {
   return { type: types.RECEIVE_USER_ID, userId };
+}
+
+function resetAuth() {
+  return { type: types.RESET_AUTH };
 }
 
 export function requestSignIn() {
@@ -64,6 +59,7 @@ function receiveValidAuth(accessToken, userId) {
   return dispatch => {
     dispatch(receiveAccessToken(accessToken));
     dispatch(receiveUserId(userId));
+    dispatch(fetchAccounts(accessToken));
   };
 }
 
@@ -95,9 +91,17 @@ export function exchangeCodeForAccessToken(code) {
       .then(response => response.json())
       .then(json => {
         Cookies.set(ACCESS_TOKEN_COOKIE_NAME, json.access_token);
-        receiveValidAuth(json.access_token, json.user_id);
+        dispatch(receiveValidAuth(json.access_token, json.user_id));
         dispatch(push('/'));
       })
       .catch(err => { throw err; });
+  };
+}
+
+export function signOut() {
+  return dispatch => {
+    Cookies.remove(ACCESS_TOKEN_COOKIE_NAME);
+    dispatch(resetAuth());
+    dispatch(push('/'));
   };
 }

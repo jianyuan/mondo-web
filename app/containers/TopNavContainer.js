@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Nav from '../components/TopNav';
+import TopNav from '../components/TopNav';
 
 class TopNavContainer extends Component {
   render() {
-    return <Nav {...this.props}/>;
+    return <TopNav {...this.props}/>;
   }
 }
 
 function mapStateToProps(state) {
-  const { auth } = state;
+  const { accounts, auth } = state;
   return {
+    accounts,
     auth
   };
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { requestSignIn } from '../actions/auth';
+import { requestSignIn, signOut } from '../actions/auth';
 
 class TopNav extends Component {
   signIn() {
@@ -9,9 +9,25 @@ class TopNav extends Component {
     dispatch(requestSignIn());
   }
 
+  signOut() {
+    const { dispatch } = this.props;
+    dispatch(signOut());
+  }
+
   renderRightNav() {
-    const { auth: { userId } } = this.props;
-    if (!userId) {
+    const { accounts: { items: [account] } } = this.props;
+    if (account) {
+      return (
+        <Nav pullRight>
+          <NavDropdown title={account.description} id="topnav-dropdown">
+            <MenuItem onClick={e => {
+              e.preventDefault();
+              this.signOut();
+            }}>Sign Out</MenuItem>
+          </NavDropdown>
+        </Nav>
+      );
+    } else {
       return (
         <Nav pullRight>
           <NavItem onClick={e => {
@@ -39,6 +55,7 @@ class TopNav extends Component {
 
 TopNav.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  accounts: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
 
