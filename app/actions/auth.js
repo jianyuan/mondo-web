@@ -105,3 +105,10 @@ export function signOut() {
     dispatch(push('/'));
   };
 }
+
+export function authRequired() {
+  return dispatch => {
+    // TODO
+    dispatch(push('/'));
+  }
+}

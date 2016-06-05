@@ -4,14 +4,16 @@ import TopNav from '../components/TopNav';
 
 class TopNavContainer extends Component {
   render() {
-    return <TopNav {...this.props}/>;
+    return <TopNav {...this.props} />;
   }
 }
 
 function mapStateToProps(state) {
   const { accounts, auth } = state;
+  const { active: activeAccount } = accounts;
   return {
     accounts,
+    activeAccount,
     auth
   };
 }

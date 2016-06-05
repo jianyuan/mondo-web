@@ -16,6 +16,7 @@ import reducer from './reducers';
 import NoMatch from './components/NoMatch';
 import App from './containers/App';
 import SignInContainer from './containers/SignInContainer';
+import TransactionsContainer from './containers/TransactionsContainer';
 
 
 const store = createStore(
@@ -29,6 +30,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <Route path="sign_in" component={SignInContainer} />
+        <Route path="transactions" component={TransactionsContainer} />
         <Route path="*" component={NoMatch}/>
       </Route>
     </Router>

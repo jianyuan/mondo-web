@@ -8,10 +8,17 @@ export function fetchAccounts(accessToken) {
     })
       .then(checkStatus)
       .then(response => response.json())
-      .then(json => dispatch(receiveAccounts(json.accounts)));
+      .then(json => {
+        dispatch(receiveAccounts(json.accounts));
+        dispatch(setActiveAccount(json.accounts[0]));
+      });
   };
 }
 
 function receiveAccounts(accounts) {
   return { type: types.RECEIVE_ACCOUNTS, accounts };
+}
+
+function setActiveAccount(account) {
+  return { type: types.SET_ACTIVE_ACCOUNT, account };
 }

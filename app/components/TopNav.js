@@ -32,11 +32,11 @@ class TopNav extends Component {
   }
 
   renderSubNav() {
-    const { accounts: { items: [account] }, auth: userId } = this.props;
-    if (account && userId) {
+    const { activeAccount, auth: userId } = this.props;
+    if (activeAccount && userId) {
       return (
         <Nav pullRight>
-          <NavDropdown title={account.description} id="topnav-dropdown">
+          <NavDropdown title={activeAccount.description} id="topnav-dropdown">
             <MenuItem onClick={e => {
               e.preventDefault();
               this.signOut();
@@ -74,6 +74,7 @@ class TopNav extends Component {
 TopNav.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.object.isRequired,
+  activeAccount: PropTypes.object,
   auth: PropTypes.object.isRequired
 };
 

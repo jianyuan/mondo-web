@@ -1,20 +1,14 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-  active: null,
   items: []
 };
 
-export default function auth(state = initialState, action) {
+export default function transactions(state = initialState, action) {
   switch (action.type) {
-  case types.RECEIVE_ACCOUNTS:
+  case types.RECEIVE_TRANSACTIONS:
     return Object.assign({}, state, {
-      items: action.accounts
-    });
-
-  case types.SET_ACTIVE_ACCOUNT:
-    return Object.assign({}, state, {
-      active: action.account
+      items: action.transactions
     });
 
   case types.RESET_AUTH:
