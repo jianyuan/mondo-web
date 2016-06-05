@@ -1,13 +1,36 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Grid } from 'react-bootstrap';
-import TopNav from '../components/TopNav';
+import { connect } from 'react-redux';
 
-export default class App extends React.Component {
+import { Grid } from 'react-bootstrap';
+import MainNavbar from '../components/MainNavbar';
+
+import { exchangeCodeForAccessToken } from '../actions';
+import mondo from '../apis/mondo';
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onCodeReceive: (code) => {
+      dispatch(exchangeCodeForAccessToken(code));
+    }
+  };
+};
+
+class App extends React.Component {
+  componentWillMount() {
+    // const qs = queryString.parse(window.location.search);
+    // if (qs.code) {
+    //   this.props.onCodeReceive(qs.code);
+    // }
+  }
+
+  handleRequestSignIn() {
+    mondo.requestSignIn();
+  }
+
   render() {
     return (
       <div>
-        <TopNav />
+        <MainNavbar onClickSignIn={this.handleRequestSignIn} />
         <Grid>
           <h1>Mondo</h1>
           {this.props.children}
@@ -18,5 +41,11 @@ export default class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  onCodeReceive: PropTypes.func.isRequired
 };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
