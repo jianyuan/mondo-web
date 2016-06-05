@@ -16,10 +16,10 @@ class TopNav extends Component {
   }
 
   renderMainNav() {
-    const { auth: userId } = this.props;
+    const { auth: { userId } } = this.props;
 
     if (!userId) {
-      return;
+      return null;
     }
 
     return (
@@ -32,7 +32,7 @@ class TopNav extends Component {
   }
 
   renderSubNav() {
-    const { activeAccount, auth: userId } = this.props;
+    const { activeAccount, auth: { userId } } = this.props;
     if (activeAccount && userId) {
       return (
         <Nav pullRight>

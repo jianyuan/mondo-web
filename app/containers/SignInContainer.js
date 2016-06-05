@@ -8,6 +8,10 @@ class SignInContainer extends Component {
     const { dispatch } = this.props;
     dispatch(maybeExchangeCodeForAccessToken());
   }
+
+  render() {
+    return null;
+  }
 }
 
 SignInContainer.propTypes = {
