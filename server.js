@@ -1,18 +1,28 @@
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+const express = require('express');
+const history = require('connect-history-api-fallback');
+const webpack = require('webpack');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpackConfig = require('./webpack.config');
 
-var compiler = webpack(config);
-var server = new WebpackDevServer(compiler, {
-  hot: true,
-  historyApiFallback: true
-});
-var port = 8080;
+const isProduction = process.env.NODE_ENV === 'production';
+const port = isProduction ? process.env.PORT : 3000;
 
-server.listen(port, 'localhost', function(err) {
-  if (err) {
-    console.error(err);
-  } else {
-    console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
-  }
+const app = express();
+app.use(history());
+
+if (!isProduction) {
+    const compiler = webpack(webpackConfig);
+    app.use(webpackMiddleware(compiler, {
+        publicPath: webpackConfig.output.publicPath
+    }));
+    app.use(webpackHotMiddleware(compiler));
+}
+
+app.listen(port, '0.0.0.0', function (err) {
+    if (err) {
+        console.error(err);
+    } else {
+        console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
+    }
 });
