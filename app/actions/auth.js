@@ -37,6 +37,8 @@ export function initAuth() {
     const accessToken = Cookies.get(ACCESS_TOKEN_COOKIE_NAME);
     if (accessToken) {
       dispatch(whoAmI(accessToken));
+    } else {
+      dispatch(maybeExchangeCodeForAccessToken());
     }
   };
 }
@@ -51,7 +53,7 @@ function whoAmI(accessToken) {
       .then(json => {
         dispatch(receiveValidAuth(accessToken, json.user_id));
       })
-      .catch(err => { throw err; });
+      .catch(() => dispatch(signOut()));
   };
 }
 
@@ -94,7 +96,7 @@ export function exchangeCodeForAccessToken(code) {
         dispatch(receiveValidAuth(json.access_token, json.user_id));
         dispatch(push('/'));
       })
-      .catch(err => { throw err; });
+      .catch(() => dispatch(signOut()));
   };
 }
 
